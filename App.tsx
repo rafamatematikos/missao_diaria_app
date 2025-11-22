@@ -105,7 +105,7 @@ const App: React.FC = () => {
     setIsIOS(isIosDevice);
 
     // Detect Standalone mode (Already installed)
-    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || (window.navigator as any).standalone;
     setIsStandalone(isInStandaloneMode);
 
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -555,7 +555,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
+    <div 
+      className="min-h-screen p-4 sm:p-6 lg:p-8"
+      style={{ paddingTop: 'calc(1rem + env(safe-area-inset-top))' }}
+    >
       <div className="max-w-7xl mx-auto">
         <Header 
           childName={childInfo?.name}
