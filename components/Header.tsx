@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Rocket, Users, UserPlus, Trash2, UserCog } from 'lucide-react';
+import { Rocket, Users, UserPlus, Trash2, UserCog, Download } from 'lucide-react';
 
 const CoinIcon = ({ className }: { className?: string }) => (
   <svg
@@ -27,9 +27,11 @@ interface HeaderProps {
   onCreateNew: () => void;
   onEditAgent: () => void;
   hasData: boolean;
+  showInstallButton?: boolean;
+  onInstall?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogout, onCreateNew, onEditAgent, hasData }) => {
+const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogout, onCreateNew, onEditAgent, hasData, showInstallButton, onInstall }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [animateCoin, setAnimateCoin] = useState(false);
@@ -78,61 +80,73 @@ const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogo
            </div>
         )}
       </div>
-      {hasData && (
-         <div className="relative" ref={menuRef}>
-            <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="w-12 h-12 bg-indigo-600 text-white flex items-center justify-center rounded-full font-bold text-xl cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all"
-                aria-haspopup="true"
-                aria-expanded={isMenuOpen}
+      <div className="flex items-center gap-3">
+        {showInstallButton && onInstall && (
+            <button
+                onClick={onInstall}
+                className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full font-bold hover:bg-indigo-700 transition-colors shadow-md"
+                title="Instalar App"
             >
-                {childName?.charAt(0).toUpperCase()}
+                <Download size={20} />
+                <span className="hidden sm:inline">Instalar App</span>
             </button>
-            {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 p-2 z-50 animate-pop-in origin-top-right">
-                    <div className="p-2 border-b border-slate-200 mb-2">
-                        <p className="font-extrabold text-slate-800">{childName}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                            <p className="text-sm text-slate-500">Agente Ativo</p>
-                             <div className="flex items-center gap-1 text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">
-                                <CoinIcon className="w-4 h-4" />
-                                <span>{coins ?? 0}</span>
+        )}
+        {hasData && (
+            <div className="relative" ref={menuRef}>
+                <button 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="w-12 h-12 bg-indigo-600 text-white flex items-center justify-center rounded-full font-bold text-xl cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all"
+                    aria-haspopup="true"
+                    aria-expanded={isMenuOpen}
+                >
+                    {childName?.charAt(0).toUpperCase()}
+                </button>
+                {isMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 p-2 z-50 animate-pop-in origin-top-right">
+                        <div className="p-2 border-b border-slate-200 mb-2">
+                            <p className="font-extrabold text-slate-800">{childName}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                                <p className="text-sm text-slate-500">Agente Ativo</p>
+                                <div className="flex items-center gap-1 text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">
+                                    <CoinIcon className="w-4 h-4" />
+                                    <span>{coins ?? 0}</span>
+                                </div>
                             </div>
                         </div>
+                        <ul className="space-y-1">
+                            <li>
+                                <button onClick={() => { onEditAgent(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-100 rounded-md transition-colors font-semibold">
+                                    <UserCog size={18} />
+                                    Editar Agente
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => { onLogout(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-100 rounded-md transition-colors font-semibold">
+                                    <Users size={18} />
+                                    Trocar Agente
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => { onCreateNew(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-100 rounded-md transition-colors font-semibold">
+                                    <UserPlus size={18} />
+                                    Criar Novo Agente
+                                </button>
+                            </li>
+                        </ul>
+                        <hr className="my-2 border-slate-200" />
+                        <ul>
+                            <li>
+                                <button onClick={() => { onDeleteAgent(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors font-semibold">
+                                    <Trash2 size={18} />
+                                    Resetar Agente Atual
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-                    <ul className="space-y-1">
-                        <li>
-                            <button onClick={() => { onEditAgent(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-100 rounded-md transition-colors font-semibold">
-                                <UserCog size={18} />
-                                Editar Agente
-                            </button>
-                        </li>
-                        <li>
-                            <button onClick={() => { onLogout(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-100 rounded-md transition-colors font-semibold">
-                                <Users size={18} />
-                                Trocar Agente
-                            </button>
-                        </li>
-                        <li>
-                            <button onClick={() => { onCreateNew(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-100 rounded-md transition-colors font-semibold">
-                                <UserPlus size={18} />
-                                Criar Novo Agente
-                            </button>
-                        </li>
-                    </ul>
-                    <hr className="my-2 border-slate-200" />
-                    <ul>
-                        <li>
-                             <button onClick={() => { onDeleteAgent(); setIsMenuOpen(false); }} className="flex items-center gap-3 w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors font-semibold">
-                                <Trash2 size={18} />
-                                Resetar Agente Atual
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            )}
-         </div>
-      )}
+                )}
+            </div>
+        )}
+      </div>
     </header>
   );
 };

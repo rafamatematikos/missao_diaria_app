@@ -91,6 +91,37 @@ const App: React.FC = () => {
   const [rewardToDelete, setRewardToDelete] = useState<Reward | null>(null);
   const [rewardToRedeem, setRewardToRedeem] = useState<Reward | null>(null);
   const [rewardToEdit, setRewardToEdit] = useState<Reward | null>(null);
+  
+  // PWA Install Prompt State
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult: any) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      setDeferredPrompt(null);
+    });
+  };
 
   
   // Effect to determine initial app state
@@ -477,7 +508,11 @@ const App: React.FC = () => {
   }
 
   if (appStatus === 'welcome') {
-    return <WelcomeScreen onStart={() => setAppStatus('createProfile')} />;
+    return (
+        <WelcomeScreen 
+            onStart={() => setAppStatus('createProfile')} 
+        />
+    );
   }
   
   if (appStatus === 'createProfile') {
@@ -514,6 +549,8 @@ const App: React.FC = () => {
           onCreateNew={handleRequestNewProfile}
           onEditAgent={() => setIsEditAgentModalOpen(true)}
           hasData={!!childInfo}
+          showInstallButton={!!deferredPrompt}
+          onInstall={handleInstallClick}
         />
 
         {!childInfo ? (
