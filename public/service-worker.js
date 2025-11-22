@@ -1,7 +1,6 @@
-const CACHE_NAME = 'missao-diaria-v1';
+const CACHE_NAME = 'missao-diaria-v2';
 const urlsToCache = [
   '/',
-  '/index.html',
   '/vite.svg'
 ];
 
