@@ -11,6 +11,7 @@ import LoginScreen from './components/LoginScreen';
 import WelcomeScreen from './components/WelcomeScreen';
 import RewardsView from './components/RewardsView';
 import EditRewardModal from './components/EditRewardModal';
+import InstallModal from './components/InstallModal';
 import format from 'date-fns/format';
 import startOfWeek from 'date-fns/startOfWeek';
 import endOfWeek from 'date-fns/endOfWeek';
@@ -94,8 +95,19 @@ const App: React.FC = () => {
   
   // PWA Install Prompt State
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
+    // Detect iOS
+    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    setIsIOS(isIosDevice);
+
+    // Detect Standalone mode (Already installed)
+    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    setIsStandalone(isInStandaloneMode);
+
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
@@ -111,16 +123,20 @@ const App: React.FC = () => {
   }, []);
 
   const handleInstallClick = () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult: any) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      setDeferredPrompt(null);
-    });
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        setDeferredPrompt(null);
+      });
+    } else {
+        // Fallback for iOS or when event didn't fire (open manual instructions)
+        setIsInstallModalOpen(true);
+    }
   };
 
   
@@ -549,7 +565,9 @@ const App: React.FC = () => {
           onCreateNew={handleRequestNewProfile}
           onEditAgent={() => setIsEditAgentModalOpen(true)}
           hasData={!!childInfo}
-          showInstallButton={!!deferredPrompt}
+          // Show install button if there's a prompt event OR we are on iOS (manual) OR we just want to offer the option (fallback)
+          // AND we are not already installed
+          showInstallButton={!isStandalone && (!!deferredPrompt || isIOS || true)} 
           onInstall={handleInstallClick}
         />
 
@@ -687,6 +705,13 @@ const App: React.FC = () => {
             onSave={handleUpdateReward}
             onCancel={() => setRewardToEdit(null)}
         />
+      )}
+
+      {isInstallModalOpen && (
+          <InstallModal 
+            onCancel={() => setIsInstallModalOpen(false)}
+            isIOS={isIOS}
+          />
       )}
     </div>
   );
