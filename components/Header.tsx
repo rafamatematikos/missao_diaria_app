@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Rocket, Users, UserPlus, Trash2, UserCog, Download } from 'lucide-react';
+import { Rocket, Users, UserPlus, Trash2, UserCog } from 'lucide-react';
 
 const CoinIcon = ({ className }: { className?: string }) => (
   <svg
@@ -27,11 +27,9 @@ interface HeaderProps {
   onCreateNew: () => void;
   onEditAgent: () => void;
   hasData: boolean;
-  showInstallButton?: boolean;
-  onInstall?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogout, onCreateNew, onEditAgent, hasData, showInstallButton, onInstall }) => {
+const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogout, onCreateNew, onEditAgent, hasData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [animateCoin, setAnimateCoin] = useState(false);
@@ -81,16 +79,6 @@ const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogo
         )}
       </div>
       <div className="flex items-center gap-3">
-        {showInstallButton && onInstall && (
-            <button
-                onClick={onInstall}
-                className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-full font-bold hover:bg-emerald-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 animate-pulse"
-                title="Instalar App"
-            >
-                <Download size={20} />
-                <span>Instalar</span>
-            </button>
-        )}
         {hasData && (
             <div className="relative" ref={menuRef}>
                 <button 

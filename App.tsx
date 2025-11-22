@@ -568,10 +568,6 @@ const App: React.FC = () => {
           onCreateNew={handleRequestNewProfile}
           onEditAgent={() => setIsEditAgentModalOpen(true)}
           hasData={!!childInfo}
-          // Show install button if there's a prompt event OR we are on iOS (manual) OR we just want to offer the option (fallback)
-          // AND we are not already installed
-          showInstallButton={!isStandalone && (!!deferredPrompt || isIOS || true)} 
-          onInstall={handleInstallClick}
         />
 
         {!childInfo ? (
