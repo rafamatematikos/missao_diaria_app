@@ -84,11 +84,11 @@ const Header: React.FC<HeaderProps> = ({ childName, coins, onDeleteAgent, onLogo
         {showInstallButton && onInstall && (
             <button
                 onClick={onInstall}
-                className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full font-bold hover:bg-indigo-700 transition-colors shadow-md"
+                className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-full font-bold hover:bg-emerald-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 animate-pulse"
                 title="Instalar App"
             >
                 <Download size={20} />
-                <span className="hidden sm:inline">Instalar App</span>
+                <span>Instalar</span>
             </button>
         )}
         {hasData && (
