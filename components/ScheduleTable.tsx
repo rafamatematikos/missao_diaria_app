@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import type { Activity } from '../types';
 import { DAYS_OF_WEEK, SHORT_DAYS_OF_WEEK } from '../constants';
-// FIX: Use sub-path imports for date-fns functions to resolve module resolution errors.
 import format from 'date-fns/format';
 import addWeeks from 'date-fns/addWeeks';
 import subWeeks from 'date-fns/subWeeks';
@@ -105,21 +104,21 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
 
     if (activities.length === 0) {
         return (
-            <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-200 text-center flex flex-col justify-center items-center">
-                <Rocket size={64} className="text-slate-300 mb-4" />
-                <h3 className="text-xl font-extrabold text-slate-700">Quadro de Missões Vazio!</h3>
-                <p className="text-slate-500 mt-2">Clique no botão <span className="font-bold text-indigo-600">'+'</span> para adicionar uma nova missão e começar a aventura!</p>
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 text-center flex flex-col justify-center items-center">
+                <Rocket size={64} className="text-slate-300 dark:text-slate-600 mb-4" />
+                <h3 className="text-xl font-extrabold text-slate-700 dark:text-slate-200">Quadro de Missões Vazio!</h3>
+                <p className="text-slate-500 dark:text-slate-400 mt-2">Clique no botão <span className="font-bold text-indigo-600 dark:text-indigo-400">'+'</span> para adicionar uma nova missão e começar a aventura!</p>
             </div>
         );
     }
   
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-200">
+    <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
        <div className="flex justify-between items-center mb-6">
-        <button onClick={handlePrevWeek} className="p-2 rounded-full hover:bg-slate-200 transition-colors" aria-label="Semana anterior">
-          <ChevronLeft className="w-6 h-6 text-slate-600" />
+        <button onClick={handlePrevWeek} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Semana anterior">
+          <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-300" />
         </button>
-        <div className="relative text-lg sm:text-xl font-extrabold text-slate-800 text-center min-w-[200px] sm:min-w-[320px]">
+        <div className="relative text-lg sm:text-xl font-extrabold text-slate-800 dark:text-white text-center min-w-[200px] sm:min-w-[320px]">
             {isDatePickerVisible ? (
                 <input
                     ref={datePickerRef}
@@ -127,32 +126,32 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                     value={format(currentDate, 'yyyy-MM-dd')}
                     onChange={handleDateChange}
                     onBlur={() => setIsDatePickerVisible(false)}
-                    className="w-full bg-slate-100 border-2 border-slate-300 rounded-lg p-1 text-center font-bold text-base focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-100 dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600 rounded-lg p-1 text-center font-bold text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 dark:text-white"
                 />
             ) : (
                 <button
                     onClick={() => setIsDatePickerVisible(true)}
-                    className="hover:bg-slate-100 p-2 rounded-lg transition-colors w-full"
+                    className="hover:bg-slate-100 dark:hover:bg-slate-700 p-2 rounded-lg transition-colors w-full"
                     aria-label="Selecionar semana"
                 >
                     {capitalize(format(start, 'dd MMM', { locale: ptBR }))} - {capitalize(format(end, 'dd MMM, yyyy', { locale: ptBR }))}
                 </button>
             )}
         </div>
-        <button onClick={handleNextWeek} className="p-2 rounded-full hover:bg-slate-200 transition-colors" aria-label="Próxima semana">
-          <ChevronRight className="w-6 h-6 text-slate-600" />
+        <button onClick={handleNextWeek} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Próxima semana">
+          <ChevronRight className="w-6 h-6 text-slate-600 dark:text-slate-300" />
         </button>
       </div>
 
        <div className="mb-6 px-2">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-bold text-slate-700">Progresso da Missão Semanal</span>
+          <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Progresso da Missão Semanal</span>
           <span className="text-sm font-extrabold">
-            <span className="text-indigo-600">{progress.percentage}%</span>
-            <span className="text-slate-500 font-medium ml-2">({progress.completed}/{progress.total})</span>
+            <span className="text-indigo-600 dark:text-indigo-400">{progress.percentage}%</span>
+            <span className="text-slate-500 dark:text-slate-400 font-medium ml-2">({progress.completed}/{progress.total})</span>
           </span>
         </div>
-        <div className="w-full bg-slate-200 rounded-full h-5 relative overflow-hidden shadow-inner border border-slate-300">
+        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-5 relative overflow-hidden shadow-inner border border-slate-300 dark:border-slate-600">
           <div 
             className={`h-full rounded-full transition-all duration-500 ease-out ${
                 progress.percentage === 100 
@@ -189,9 +188,9 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
             });
 
             return (
-                <div key={activity.id} className={`p-4 rounded-xl border transition-all duration-300 ${isMissionFullyCompletedThisWeek ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}`}>
+                <div key={activity.id} className={`p-4 rounded-xl border transition-all duration-300 ${isMissionFullyCompletedThisWeek ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700'}`}>
                     <div className="flex justify-between items-start gap-2">
-                         <div className={`font-bold flex items-center gap-2 transition-colors duration-300 ${isMissionFullyCompletedThisWeek ? 'text-slate-500' : 'text-slate-800'}`}>
+                         <div className={`font-bold flex items-center gap-2 transition-colors duration-300 ${isMissionFullyCompletedThisWeek ? 'text-slate-500 dark:text-slate-400' : 'text-slate-800 dark:text-slate-200'}`}>
                             {isMissionFullyCompletedThisWeek && (
                                 <Trophy className="w-5 h-5 text-amber-500 animate-pop-in" />
                             )}
@@ -200,14 +199,14 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                         <div className="flex items-center flex-shrink-0">
                             <button
                                 onClick={() => onEdit(activity, start)}
-                                className="text-indigo-500 hover:text-indigo-700 p-2 rounded-full hover:bg-indigo-100"
+                                className="text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 p-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
                                 aria-label={`Editar missão ${effectiveName} desta semana`}
                             >
                                 <Pencil className="w-5 h-5" />
                             </button>
                             <button 
                                 onClick={() => onDelete(activity.id, effectiveName, start)} 
-                                className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100"
+                                className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30"
                                 aria-label={`Excluir missão ${effectiveName} desta semana`}
                             >
                                 <Trash2 className="w-5 h-5" />
@@ -226,7 +225,7 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                             
                             return (
                                 <div key={day.toISOString()} className="flex flex-col items-center space-y-2">
-                                    <span className="text-xs font-bold text-slate-500">{SHORT_DAYS_OF_WEEK[day.getDay()]}</span>
+                                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{SHORT_DAYS_OF_WEEK[day.getDay()]}</span>
                                     <div className="w-9 h-9 flex items-center justify-center">
                                         {isScheduled ? (
                                             <button 
@@ -245,10 +244,10 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                                                 }`}
                                                 aria-label={`Marcar missão ${effectiveName} no dia ${format(day, 'dd/MM')} como ${isCompleted ? 'não concluída' : 'concluída'}`}
                                             >
-                                                <Star key={`${activity.id}-${dateKey}-${isCompleted}`} className={`w-7 h-7 transition-all duration-300 ${isCompleted ? 'text-amber-400 fill-amber-400 animate-star-fill' : 'text-slate-300'}`} />
+                                                <Star key={`${activity.id}-${dateKey}-${isCompleted}`} className={`w-7 h-7 transition-all duration-300 ${isCompleted ? 'text-amber-400 fill-amber-400 animate-star-fill' : 'text-slate-300 dark:text-slate-600'}`} />
                                             </button>
                                         ) : (
-                                            <div className="w-2 h-2 bg-slate-200 rounded-full" title="Não agendado"></div>
+                                            <div className="w-2 h-2 bg-slate-200 dark:bg-slate-700 rounded-full" title="Não agendado"></div>
                                         )}
                                     </div>
                                 </div>
@@ -258,7 +257,7 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                 </div>
             )
         }) : (
-            <div className="text-center p-8 text-slate-500">
+            <div className="text-center p-8 text-slate-500 dark:text-slate-400">
                 Nenhuma missão programada para esta semana.
             </div>
         )}
@@ -268,14 +267,14 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
       <div className="hidden md:block mt-2 overflow-x-auto">
           <div className="w-full min-w-[700px]">
             <div className="grid grid-cols-9 gap-2">
-                <div className="px-2 py-3 text-sm font-extrabold text-slate-600 text-left">Missão</div>
+                <div className="px-2 py-3 text-sm font-extrabold text-slate-600 dark:text-slate-300 text-left">Missão</div>
                 {weekDays.map(day => (
                   <div key={day.toString()} className="px-1 py-3 text-center">
-                    <div className="text-sm font-extrabold text-slate-600 capitalize">{format(day, 'EEE', { locale: ptBR })}</div>
-                    <div className="text-slate-800 text-lg sm:text-xl mt-1">{format(day, 'd')}</div>
+                    <div className="text-sm font-extrabold text-slate-600 dark:text-slate-300 capitalize">{format(day, 'EEE', { locale: ptBR })}</div>
+                    <div className="text-slate-800 dark:text-slate-200 text-lg sm:text-xl mt-1">{format(day, 'd')}</div>
                   </div>
                 ))}
-                <div className="px-2 py-3 text-sm font-extrabold text-slate-600 text-center">Ações</div>
+                <div className="px-2 py-3 text-sm font-extrabold text-slate-600 dark:text-slate-300 text-center">Ações</div>
             </div>
 
             <div className="space-y-2 mt-2">
@@ -303,9 +302,9 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                     return (
                         <div 
                             key={activity.id} 
-                            className={`grid grid-cols-9 gap-2 items-center rounded-xl px-2 py-3 transition-colors duration-300 ${isMissionFullyCompletedThisWeek ? 'bg-green-50' : 'bg-white'}`}
+                            className={`grid grid-cols-9 gap-2 items-center rounded-xl px-2 py-3 transition-colors duration-300 ${isMissionFullyCompletedThisWeek ? 'bg-green-50 dark:bg-green-900/20' : 'bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800'}`}
                         >
-                          <div className={`font-bold flex items-center gap-2 transition-colors duration-300 ${isMissionFullyCompletedThisWeek ? 'text-slate-500' : 'text-slate-800'}`}>
+                          <div className={`font-bold flex items-center gap-2 transition-colors duration-300 ${isMissionFullyCompletedThisWeek ? 'text-slate-500 dark:text-slate-400' : 'text-slate-800 dark:text-slate-200'}`}>
                             {isMissionFullyCompletedThisWeek && (
                                 <Trophy className="w-5 h-5 text-amber-500 animate-pop-in" />
                             )}
@@ -339,7 +338,7 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                                               }`}
                                               aria-label={`Marcar missão ${effectiveName} no dia ${format(day, 'dd/MM')} como ${isCompleted ? 'não concluída' : 'concluída'}`}
                                           >
-                                              <Star key={`${activity.id}-${dateKey}-${isCompleted}`} className={`w-6 h-6 transition-all duration-300 ${isCompleted ? 'text-amber-400 fill-amber-400 animate-star-fill' : 'text-slate-300'}`} />
+                                              <Star key={`${activity.id}-${dateKey}-${isCompleted}`} className={`w-6 h-6 transition-all duration-300 ${isCompleted ? 'text-amber-400 fill-amber-400 animate-star-fill' : 'text-slate-300 dark:text-slate-600'}`} />
                                           </button>
                                       )}
                                   </div>
@@ -349,14 +348,14 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                               <div className="flex justify-center items-center gap-2">
                                   <button
                                       onClick={() => onEdit(activity, start)}
-                                      className="text-indigo-500 hover:text-indigo-700 transition-colors duration-200 p-2 rounded-full hover:bg-indigo-100"
+                                      className="text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200 p-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
                                       aria-label={`Editar missão ${effectiveName} desta semana`}
                                   >
                                       <Pencil className="w-5 h-5" />
                                   </button>
                                   <button 
                                       onClick={() => onDelete(activity.id, effectiveName, start)} 
-                                      className="text-red-500 hover:text-red-700 transition-colors duration-200 p-2 rounded-full hover:bg-red-100"
+                                      className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30"
                                       aria-label={`Excluir missão ${effectiveName} desta semana`}
                                   >
                                       <Trash2 className="w-5 h-5" />
@@ -366,7 +365,7 @@ const ScheduleTable: React.FC<ScheduleTableProps> = ({ activities, onDelete, onT
                         </div>
                     );
                 }) : (
-                    <div className="col-span-8 text-center p-8 text-slate-500">
+                    <div className="col-span-8 text-center p-8 text-slate-500 dark:text-slate-400">
                         Nenhuma missão programada para esta semana.
                     </div>
                 )}

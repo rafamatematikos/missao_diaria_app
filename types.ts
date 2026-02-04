@@ -32,7 +32,7 @@ export interface RedeemedReward extends Reward {
 
 export interface ChildInfo {
   name: string;
-  age: string;
+  birthDate: string; // Format 'yyyy-MM-dd'
   coins?: number;
   rewards?: Reward[];
   redeemedRewards?: RedeemedReward[];

@@ -24,16 +24,15 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ icon, value, label, color }) => (
-    <div className={`p-4 rounded-xl shadow-lg flex items-center gap-4 border-l-4 ${color}`}>
+    <div className={`p-4 rounded-xl shadow-lg flex items-center gap-4 border-l-4 ${color} bg-white dark:bg-slate-800 dark:text-slate-200`}>
         <div className="flex-shrink-0">{icon}</div>
         <div>
-            <p className="text-2xl font-extrabold text-slate-800">{value}</p>
-            <p className="text-sm font-semibold text-slate-500">{label}</p>
+            <p className="text-2xl font-extrabold text-slate-800 dark:text-white">{value}</p>
+            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">{label}</p>
         </div>
     </div>
 );
 
-// FIX: Refactored StatusIcon to use an explicit props interface and React.FC to resolve a TypeScript error.
 interface StatusIconProps {
   status: 'completed' | 'missed' | 'not-scheduled';
 }
@@ -41,11 +40,23 @@ interface StatusIconProps {
 const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
     switch (status) {
         case 'completed':
-            return <CheckCircle className="w-5 h-5 text-green-500" title="Concluída" />;
+            return (
+                <div title="Concluída" className="flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                </div>
+            );
         case 'missed':
-            return <XCircle className="w-5 h-5 text-red-500" title="Não Concluída" />;
+            return (
+                <div title="Não Concluída" className="flex items-center justify-center">
+                    <XCircle className="w-5 h-5 text-red-500" />
+                </div>
+            );
         case 'not-scheduled':
-            return <Circle className="w-5 h-5 text-slate-300" fill="currentColor" title="Não agendada" />;
+            return (
+                <div title="Não agendada" className="flex items-center justify-center">
+                    <Circle className="w-5 h-5 text-slate-300 dark:text-slate-600" fill="currentColor" />
+                </div>
+            );
         default:
             return null;
     }
@@ -144,47 +155,47 @@ const HistoryView: React.FC<HistoryViewProps> = ({ activities }) => {
     const maxDailyCount = Math.max(...dashboardData.dailyCompletionCounts, 1);
 
     return (
-    <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-200">
+    <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
         <div className="flex justify-between items-center mb-6">
-            <button onClick={handlePrevWeek} className="p-2 rounded-full hover:bg-slate-200 transition-colors" aria-label="Semana anterior">
-            <ChevronLeft className="w-6 h-6 text-slate-600" />
+            <button onClick={handlePrevWeek} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Semana anterior">
+            <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-300" />
             </button>
-            <h3 className="text-lg sm:text-xl font-extrabold text-slate-800 text-center">
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-800 dark:text-white text-center">
                 {capitalize(format(start, 'dd MMM', { locale: ptBR }))} - {capitalize(format(end, 'dd MMM, yyyy', { locale: ptBR }))}
             </h3>
-            <button onClick={handleNextWeek} className="p-2 rounded-full hover:bg-slate-200 transition-colors" aria-label="Próxima semana">
-            <ChevronRight className="w-6 h-6 text-slate-600" />
+            <button onClick={handleNextWeek} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Próxima semana">
+            <ChevronRight className="w-6 h-6 text-slate-600 dark:text-slate-300" />
             </button>
         </div>
 
         {!dashboardData.weeklyStats.hasTasks ? (
-            <div className="text-center py-10 px-4 bg-slate-50 rounded-lg">
-                <Trophy size={48} className="text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-extrabold text-slate-700">Nenhuma missão agendada para esta semana.</h3>
-                <p className="text-slate-500 mt-1">Navegue para outras semanas ou adicione missões na aba principal.</p>
+            <div className="text-center py-10 px-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                <Trophy size={48} className="text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                <h3 className="text-lg font-extrabold text-slate-700 dark:text-slate-300">Nenhuma missão agendada para esta semana.</h3>
+                <p className="text-slate-500 dark:text-slate-400 mt-1">Navegue para outras semanas ou adicione missões na aba principal.</p>
             </div>
         ) : (
             <div className="space-y-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard icon={<Trophy size={32} className="text-amber-500" />} value={dashboardData.weeklyStats.totalCompletedTasks} label="Missões Concluídas" color="border-amber-400 bg-amber-50" />
-                    <StatCard icon={<Target size={32} className="text-green-500" />} value={`${dashboardData.weeklyStats.successRate}%`} label="Taxa de Sucesso" color="border-green-400 bg-green-50" />
-                    <StatCard icon={<Award size={32} className="text-indigo-500" />} value={dashboardData.weeklyStats.perfectDays} label="Dias Perfeitos" color="border-indigo-400 bg-indigo-50" />
-                    <StatCard icon={<TrendingUp size={32} className="text-sky-500" />} value={dashboardData.weeklyStats.mostCompletedMission} label="Missão Destaque" color="border-sky-400 bg-sky-50" />
+                    <StatCard icon={<Trophy size={32} className="text-amber-500" />} value={dashboardData.weeklyStats.totalCompletedTasks} label="Missões Concluídas" color="border-amber-400" />
+                    <StatCard icon={<Target size={32} className="text-green-500" />} value={`${dashboardData.weeklyStats.successRate}%`} label="Taxa de Sucesso" color="border-green-400" />
+                    <StatCard icon={<Award size={32} className="text-indigo-500" />} value={dashboardData.weeklyStats.perfectDays} label="Dias Perfeitos" color="border-indigo-400" />
+                    <StatCard icon={<TrendingUp size={32} className="text-sky-500" />} value={dashboardData.weeklyStats.mostCompletedMission} label="Missão Destaque" color="border-sky-400" />
                 </div>
                 
                 <div>
-                    <h4 className="text-lg font-extrabold text-slate-700 mb-4">Desempenho Diário</h4>
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h4 className="text-lg font-extrabold text-slate-700 dark:text-slate-200 mb-4">Desempenho Diário</h4>
+                    <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
                         <div className="flex justify-around items-end h-40">
                             {dashboardData.dailyCompletionCounts.map((count, index) => (
                                 <div key={index} className="flex flex-col items-center gap-2 w-10 text-center group">
-                                    <div className="text-sm font-bold text-slate-800 opacity-0 group-hover:opacity-100 transition-opacity h-5">{count > 0 ? count : ''}</div>
+                                    <div className="text-sm font-bold text-slate-800 dark:text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity h-5">{count > 0 ? count : ''}</div>
                                     <div 
                                         className="w-6 bg-indigo-400 hover:bg-indigo-500 rounded-t-md transition-all duration-300"
                                         style={{ height: `${(count / maxDailyCount) * 100}%` }}
                                         title={`${count} missões concluídas`}
                                     ></div>
-                                    <span className="text-xs font-bold text-slate-500">{SHORT_DAYS_OF_WEEK[index]}</span>
+                                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{SHORT_DAYS_OF_WEEK[index]}</span>
                                 </div>
                             ))}
                         </div>
@@ -192,11 +203,11 @@ const HistoryView: React.FC<HistoryViewProps> = ({ activities }) => {
                 </div>
 
                 <div>
-                    <h4 className="text-lg font-extrabold text-slate-700 mb-4">Detalhes das Missões da Semana</h4>
+                    <h4 className="text-lg font-extrabold text-slate-700 dark:text-slate-200 mb-4">Detalhes das Missões da Semana</h4>
                     <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-2">
                         {dashboardData.activityDetails.map(detail => (
-                            <div key={detail.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
-                                <span className="font-bold text-slate-800">{detail.name}</span>
+                            <div key={detail.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                                <span className="font-bold text-slate-800 dark:text-slate-200">{detail.name}</span>
                                 <div className="flex justify-around items-center w-full sm:w-auto">
                                     {detail.statuses.map((status, index) => (
                                         <StatusIcon key={index} status={status} />

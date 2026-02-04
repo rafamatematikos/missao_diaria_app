@@ -5,13 +5,16 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#F0F4F8" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Missão Diária" />
-    <link rel="apple-touch-icon" href="/vite.svg" />
-    <link rel="manifest" href="/manifest.json" />
     <title>Missão Diária</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {}
+        }
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -42,11 +45,19 @@
         --muted: #94A3B8; /* Azul ardósia médio */
       }
 
+      .dark {
+        --background: #0f172a; /* Slate 900 */
+        --foreground: #f8fafc; /* Slate 50 */
+        --card: #1e293b; /* Slate 800 */
+        --muted: #64748b; /* Slate 500 */
+      }
+
       body {
         font-family: var(--font-sans);
         background-color: var(--background);
         color: var(--foreground);
         overscroll-behavior-y: none; /* Previne o efeito de elástico no topo/fundo */
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       @keyframes pop-in {

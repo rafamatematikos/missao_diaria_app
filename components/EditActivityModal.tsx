@@ -70,21 +70,21 @@ const EditActivityModal: React.FC<EditActivityModalProps> = ({ activity, weekSta
       aria-labelledby="edit-modal-title"
     >
       <div 
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg animate-pop-in border border-slate-200"
+        className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-lg animate-pop-in border border-slate-200 dark:border-slate-700"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-6 border-b border-slate-200">
-            <h2 id="edit-modal-title" className="text-xl font-extrabold text-slate-800">Ajustar Missão da Semana</h2>
-            <button onClick={onCancel} className="text-slate-500 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100 transition-colors">
+        <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700">
+            <h2 id="edit-modal-title" className="text-xl font-extrabold text-slate-800 dark:text-white">Ajustar Missão da Semana</h2>
+            <button onClick={onCancel} className="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                 <X size={24} />
             </button>
         </div>
         <div className="p-6">
-          <p className="text-slate-600 mb-6 -mt-2">As alterações afetarão apenas a semana de {format(weekStartDate, "dd/MM/yy")}.</p>
+          <p className="text-slate-600 dark:text-slate-400 mb-6 -mt-2">As alterações afetarão apenas a semana de {format(weekStartDate, "dd/MM/yy")}.</p>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="edit-activity-name" className="block text-sm font-bold text-slate-600 mb-1">
+              <label htmlFor="edit-activity-name" className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-1">
                 Nome da Missão
               </label>
               <input
@@ -93,12 +93,12 @@ const EditActivityModal: React.FC<EditActivityModalProps> = ({ activity, weekSta
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 bg-slate-50 font-semibold"
+                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white font-semibold"
               />
             </div>
             {activity.recurrence === 'weekly' && (
               <div>
-                <label className="block text-sm font-bold text-slate-600 mb-2">
+                <label className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-2">
                   Dias da Missão
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -110,7 +110,7 @@ const EditActivityModal: React.FC<EditActivityModalProps> = ({ activity, weekSta
                       className={`py-2 px-2 text-sm font-bold rounded-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
                         selectedDays.has(day)
                           ? 'bg-indigo-600 text-white shadow-md transform hover:bg-indigo-700'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                       }`}
                     >
                       {day}
@@ -123,7 +123,7 @@ const EditActivityModal: React.FC<EditActivityModalProps> = ({ activity, weekSta
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-lg hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 transition"
+                className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 transition"
               >
                 Cancelar
               </button>

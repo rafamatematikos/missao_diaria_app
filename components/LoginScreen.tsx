@@ -39,21 +39,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onCreateNew }) => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-slate-200 animate-pop-in">
+      <div className="w-full max-w-md bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 animate-pop-in">
         <div className="text-center">
-            <Rocket className="w-16 h-16 text-indigo-600 mx-auto mb-4" />
-            <h1 className="text-3xl font-extrabold text-slate-800">Missão Diária</h1>
-            <p className="text-slate-500 mt-2">Bem-vindo de volta à Central!</p>
+            <Rocket className="w-16 h-16 text-indigo-600 dark:text-indigo-400 mx-auto mb-4" />
+            <h1 className="text-3xl font-extrabold text-slate-800 dark:text-white">Missão Diária</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2">Bem-vindo de volta à Central!</p>
         </div>
 
         <div className="mt-8">
-          <h2 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2"><Users size={20} /> Selecionar Agente</h2>
+          <h2 className="text-lg font-bold text-slate-700 dark:text-slate-200 mb-4 flex items-center gap-2"><Users size={20} /> Selecionar Agente</h2>
           <div className="flex flex-wrap justify-center gap-3">
             {profiles.map(profile => (
               <button
                 key={profile}
                 onClick={() => handleProfileSelect(profile)}
-                className="w-44 text-center p-4 bg-slate-100 text-slate-800 font-bold rounded-lg hover:bg-indigo-100 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200"
+                className="w-44 text-center p-4 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white font-bold rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900 hover:text-indigo-600 dark:hover:text-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200"
               >
                 {profile}
               </button>
@@ -64,10 +64,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onCreateNew }) => {
         <div className="mt-8">
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                <div className="w-full border-t border-slate-300" />
+                <div className="w-full border-t border-slate-300 dark:border-slate-600" />
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-white px-2 text-sm font-semibold text-slate-500">OU</span>
+                <span className="bg-white dark:bg-slate-800 px-2 text-sm font-semibold text-slate-500 dark:text-slate-400">OU</span>
               </div>
             </div>
             <button

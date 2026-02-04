@@ -11,7 +11,6 @@ import LoginScreen from './components/LoginScreen';
 import WelcomeScreen from './components/WelcomeScreen';
 import RewardsView from './components/RewardsView';
 import EditRewardModal from './components/EditRewardModal';
-import InstallModal from './components/InstallModal';
 import format from 'date-fns/format';
 import startOfWeek from 'date-fns/startOfWeek';
 import endOfWeek from 'date-fns/endOfWeek';
@@ -49,15 +48,15 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ message, onConfir
       onClick={onCancel}
     >
       <div 
-        className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-sm animate-pop-in border border-slate-200"
+        className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm animate-pop-in border border-slate-200 dark:border-slate-700"
         onClick={e => e.stopPropagation()}
       >
-        <h2 id="modal-title" className="text-lg font-extrabold text-slate-800 mb-2">Confirmar Ação</h2>
-        <p className="text-slate-600 mb-6">{message}</p>
+        <h2 id="modal-title" className="text-lg font-extrabold text-slate-800 dark:text-white mb-2">Confirmar Ação</h2>
+        <p className="text-slate-600 dark:text-slate-300 mb-6">{message}</p>
         <div className="flex justify-end space-x-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-lg hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 transition duration-200"
+            className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 transition duration-200"
           >
             Cancelar
           </button>
@@ -92,54 +91,22 @@ const App: React.FC = () => {
   const [rewardToDelete, setRewardToDelete] = useState<Reward | null>(null);
   const [rewardToRedeem, setRewardToRedeem] = useState<Reward | null>(null);
   const [rewardToEdit, setRewardToEdit] = useState<Reward | null>(null);
-  
-  // PWA Install Prompt State
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false);
+
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
-    // Detect iOS
-    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    setIsIOS(isIosDevice);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
-    // Detect Standalone mode (Already installed)
-    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || (window.navigator as any).standalone;
-    setIsStandalone(isInStandaloneMode);
-
-    const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
   }, []);
 
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult: any) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
-        setDeferredPrompt(null);
-      });
-    } else {
-        // Fallback for iOS or when event didn't fire (open manual instructions)
-        setIsInstallModalOpen(true);
-    }
-  };
-
-  
   // Effect to determine initial app state
   useEffect(() => {
     const keys = Object.keys(localStorage);
@@ -498,7 +465,7 @@ const App: React.FC = () => {
   const ViewToggleButton: React.FC<{
       view: 'schedule' | 'history' | 'rewards';
       label: string;
-      icon: React.ReactElement;
+      icon: React.ReactElement<{ className?: string }>;
   }> = ({ view, label, icon }) => {
     const sizedIcon = React.cloneElement(icon, {
         className: `w-6 h-6 sm:w-4 sm:h-4 ${icon.props.className || ''}`.trim()
@@ -509,8 +476,8 @@ const App: React.FC = () => {
         onClick={() => setCurrentView(view)}
         className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
           currentView === view
-            ? 'bg-white text-indigo-600 shadow-md'
-            : 'bg-transparent text-slate-600 hover:text-indigo-600'
+            ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-md'
+            : 'bg-transparent text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
         }`}
       >
         {sizedIcon}
@@ -555,19 +522,19 @@ const App: React.FC = () => {
   }
 
   return (
-    <div 
-      className="min-h-screen p-4 sm:p-6 lg:p-8"
-      style={{ paddingTop: 'calc(1rem + env(safe-area-inset-top))' }}
-    >
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         <Header 
           childName={childInfo?.name}
+          birthDate={childInfo?.birthDate}
           coins={childInfo?.coins}
           onDeleteAgent={() => setIsDeleteAgentModalOpen(true)}
           onLogout={handleLogout}
           onCreateNew={handleRequestNewProfile}
           onEditAgent={() => setIsEditAgentModalOpen(true)}
           hasData={!!childInfo}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
 
         {!childInfo ? (
@@ -577,7 +544,7 @@ const App: React.FC = () => {
         ) : (
           <main className="mt-8">
             <div className="space-y-6">
-              <div className="bg-slate-200 p-1 rounded-xl flex items-stretch sm:items-center space-x-1 w-full sm:w-auto sm:max-w-md mx-auto sm:mx-0">
+              <div className="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex items-stretch sm:items-center space-x-1 w-full sm:w-auto sm:max-w-md mx-auto sm:mx-0">
                   <ViewToggleButton view="schedule" label="Missões da Semana" icon={<Rocket />} />
                   <ViewToggleButton view="history" label="Salão de Conquistas" icon={<Trophy />} />
                   <ViewToggleButton view="rewards" label="Recompensas" icon={<Gift />} />
@@ -627,12 +594,12 @@ const App: React.FC = () => {
             aria-modal="true"
         >
             <div 
-                className="bg-white rounded-2xl shadow-2xl w-full max-w-lg animate-pop-in max-h-[90vh] flex flex-col border border-slate-200"
+                className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-lg animate-pop-in max-h-[90vh] flex flex-col border border-slate-200 dark:border-slate-700"
                 onClick={e => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center p-6 border-b border-slate-200 flex-shrink-0">
-                  <h2 id="add-modal-title" className="text-xl font-extrabold text-slate-800">Criar Nova Missão</h2>
-                  <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100 transition-colors">
+              <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+                  <h2 id="add-modal-title" className="text-xl font-extrabold text-slate-800 dark:text-white">Criar Nova Missão</h2>
+                  <button onClick={() => setIsAddModalOpen(false)} className="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                       <X size={24} />
                   </button>
               </div>
@@ -704,13 +671,6 @@ const App: React.FC = () => {
             onSave={handleUpdateReward}
             onCancel={() => setRewardToEdit(null)}
         />
-      )}
-
-      {isInstallModalOpen && (
-          <InstallModal 
-            onCancel={() => setIsInstallModalOpen(false)}
-            isIOS={isIOS}
-          />
       )}
     </div>
   );

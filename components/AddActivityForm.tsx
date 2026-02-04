@@ -77,7 +77,7 @@ const AddActivityForm: React.FC<AddActivityFormProps> = ({ onAdd }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-        <label htmlFor="activity-name" className="block text-sm font-bold text-slate-600 mb-1">
+        <label htmlFor="activity-name" className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-1">
             Nome da Missão
         </label>
         <input
@@ -87,16 +87,16 @@ const AddActivityForm: React.FC<AddActivityFormProps> = ({ onAdd }) => {
             onChange={(e) => setName(e.target.value)}
             placeholder="Ex: Guardar os brinquedos"
             required
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 font-semibold"
+            className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-400 font-semibold"
         />
         </div>
         <div>
-        <label className="block text-sm font-bold text-slate-600 mb-2">Frequência da Missão</label>
-        <div className="flex bg-slate-100 p-1 rounded-lg">
-            <button type="button" onClick={() => setRecurrence('weekly')} className={`flex-1 text-center text-sm font-bold py-2 rounded-md transition-all ${recurrence === 'weekly' ? 'bg-white text-indigo-600 shadow' : 'text-slate-600 hover:bg-slate-200'}`}>
+        <label className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-2">Frequência da Missão</label>
+        <div className="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-lg">
+            <button type="button" onClick={() => setRecurrence('weekly')} className={`flex-1 text-center text-sm font-bold py-2 rounded-md transition-all ${recurrence === 'weekly' ? 'bg-white dark:bg-slate-600 text-indigo-600 dark:text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
                 Semanal
             </button>
-            <button type="button" onClick={() => setRecurrence('once')} className={`flex-1 text-center text-sm font-bold py-2 rounded-md transition-all ${recurrence === 'once' ? 'bg-white text-indigo-600 shadow' : 'text-slate-600 hover:bg-slate-200'}`}>
+            <button type="button" onClick={() => setRecurrence('once')} className={`flex-1 text-center text-sm font-bold py-2 rounded-md transition-all ${recurrence === 'once' ? 'bg-white dark:bg-slate-600 text-indigo-600 dark:text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'}`}>
                 Missão Única
             </button>
         </div>
@@ -105,13 +105,13 @@ const AddActivityForm: React.FC<AddActivityFormProps> = ({ onAdd }) => {
         {recurrence === 'weekly' && (
         <div>
             <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-bold text-slate-600">
+                <label className="block text-sm font-bold text-slate-600 dark:text-slate-300">
                 Dias da Missão
                 </label>
                 <button
                     type="button"
                     onClick={handleSelectAllDays}
-                    className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                    className="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
                 >
                     {selectedDays.size === DAYS_OF_WEEK.length ? 'Limpar Todos' : 'Selecionar Todos'}
                 </button>
@@ -125,7 +125,7 @@ const AddActivityForm: React.FC<AddActivityFormProps> = ({ onAdd }) => {
                 className={`w-full py-3 text-sm font-bold rounded-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
                     selectedDays.has(day)
                     ? 'bg-indigo-600 text-white shadow-md transform hover:bg-indigo-700'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                 }`}
                 >
                 {day}
@@ -137,7 +137,7 @@ const AddActivityForm: React.FC<AddActivityFormProps> = ({ onAdd }) => {
 
         {recurrence === 'once' && (
             <div>
-                <label htmlFor="activity-date" className="block text-sm font-bold text-slate-600 mb-1">
+                <label htmlFor="activity-date" className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-1">
                 Data da Missão
                 </label>
                 <input
@@ -146,7 +146,7 @@ const AddActivityForm: React.FC<AddActivityFormProps> = ({ onAdd }) => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 required={recurrence === 'once'}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 font-semibold"
+                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white placeholder:text-slate-400 font-semibold"
                 />
             </div>
         )}
